@@ -1,0 +1,100 @@
+<html ng-app="myApp">
+
+<head>
+    <title> Origin Weather Application </title>
+
+    <!--- Load Angular --->
+    <script src="bower_components/angular/angular.min.js"></script>
+
+    <!--- Load Bootstrap --->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--- Load your JS --->
+    <script src="script.js"></script>
+
+    <!--- Load Toastr --->
+    <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css" type="text/css" />
+    <script src="bower_components/AngularJS-Toaster/toaster.min.js"></script>
+
+
+</head>
+
+<body style="margin:20;padding:20">
+    <p>
+        <div class="well well-lg">
+            <h1 id="title">Origin Weather Application</h1>
+            <h5>Always know if you'll need an umbrella!</h5>
+        </div>
+
+        <div ng-controller="myController as vm">
+
+            <button type="button" class="btn btn-secondary" ng-click="vm.giveLocation(place.histLocation)" ng-repeat="place in vm.places | limitTo:'5'">{{ place.histLocation }}</button>
+
+            <div class="input-group">
+                <input type="text" id="inputLocation" ng-model="vm.inputLocation" ng-value="vm.inputLocation" class="form-control" placeholder="Enter a Location Name...">
+                <span class="input-group-btn">
+          <button class="btn btn-default" ng-click="vm.giveLocation(vm.inputLocation)" type="button">Go!</button>
+                </span>
+            </div>
+
+
+            <p>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Weather Information</h3>
+                                </div>
+                                <div class="panel-body">
+
+                                    <img ng-src="http://openweathermap.org/img/w/{{ vm.weatherData.weather[0].icon }}.png" alt="Here's the weather icon for the location that you entered">
+                                    <h4> {{ vm.weatherData.name }}</h4> <br> Lat/Long: {{ vm.weatherData.coord.lat }}, {{ vm.weatherData.coord.lon }}
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5>Temperature:</h5>{{ vm.weatherData.main.temp }} F</div>
+                                        <div class="col-sm-3">
+                                            <h5>Pressure:</h5>{{ vm.weatherData.main.pressure }}</div>
+                                        <div class="col-sm-3">
+                                            <h5>Humidity:</h5>{{ vm.weatherData.main.humidity }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5>Lowest Temp:</h5>{{ vm.weatherData.main.temp_min }} F</div>
+                                        <div class="col-sm-3">
+                                            <h5>Highest Temp:</h5>{{ vm.weatherData.main.temp_max }} F</div>
+                                        <div class="col-sm-3">
+                                            <h5>Wind Speed:</h5>{{ vm.weatherData.wind.speed }}</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Search History</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr ng-repeat="place in vm.places | limitTo:'5'">
+                                                <td colspan="15">{{ place.histLocation }}</td>
+                                                <td>{{ place.histDateTime | date:'medium' }} - {{ vm.weatherData.main.temp }}F</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+</body>
+
+</html>
